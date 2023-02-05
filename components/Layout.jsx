@@ -11,7 +11,7 @@ const ChildWrap = styled.div`
   position: relative;
   top: 60px;
   height: calc(100vh - 60px);
-  background-color: blue;
+  background-color: #f4f4f4;
 `;
 
 export default function Layout({ children }) {

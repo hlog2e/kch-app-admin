@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { login } from "@/apis/auth";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 const Container = styled.div`
   width: 100vw;
@@ -47,6 +47,7 @@ const InputWrap = styled.form`
 `;
 
 export default function Login() {
+  const router = useRouter();
   const { mutate } = useMutation(login);
 
   const [idValue, setIdValue] = useState("");
