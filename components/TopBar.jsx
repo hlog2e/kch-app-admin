@@ -11,7 +11,7 @@ const Container = styled.div`
   border-bottom-width: 1px;
   border-bottom-style: solid;
   height: 60px;
-
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;

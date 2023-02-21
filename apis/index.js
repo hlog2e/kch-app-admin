@@ -34,6 +34,7 @@ apiInstance.interceptors.response.use(
 // Auth instance response 인터셉터
 apiAuthInstance.interceptors.response.use(
   function (response) {
+    console.log("test", response);
     return response;
   },
   function (error) {

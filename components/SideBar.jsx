@@ -19,20 +19,31 @@ export default function SideBar() {
       id: 0,
       text: "대시보드",
       icon: <RxDashboard />,
+      route: "/dashboard",
       isChecked: router.pathname === "/dashboard",
+      router: router,
     },
     {
       id: 1,
       text: "학생관리",
       icon: <IoPeopleOutline />,
+      route: "/student",
       isChecked: router.pathname === "/student",
+      router: router,
     },
   ];
   return (
     <Container>
-      {sideBarItems.map(({ id, text, icon, isChecked }) => {
+      {sideBarItems.map(({ id, text, icon, isChecked, route, router }) => {
         return (
-          <SideBarItem key={id} text={text} icon={icon} isChecked={isChecked} />
+          <SideBarItem
+            key={id}
+            text={text}
+            icon={icon}
+            isChecked={isChecked}
+            route={route}
+            router={router}
+          />
         );
       })}
     </Container>
@@ -45,6 +56,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
+  cursor: pointer;
 
   &:hover {
     background-color: #f4f4f4;
@@ -59,9 +71,13 @@ const ItemText = styled.p`
   }};
 `;
 
-function SideBarItem({ text, icon, isChecked }) {
+function SideBarItem({ text, icon, isChecked, route, router }) {
   return (
-    <Item>
+    <Item
+      onClick={() => {
+        router.push(route);
+      }}
+    >
       {icon}
       <ItemText isChecked={isChecked}>{text}</ItemText>
     </Item>
