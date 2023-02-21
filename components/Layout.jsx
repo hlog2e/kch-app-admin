@@ -1,6 +1,7 @@
 import TopBar from "@/components/TopBar";
 import SideBar from "@/components/SideBar";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 const Wrap = styled.div`
   display: flex;
@@ -16,10 +17,39 @@ const ChildWrap = styled.div`
 `;
 
 export default function Layout({ children }) {
+  const [width, setWidth] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [sideBarShow, setSideBarShow] = useState(true);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWidth(window.innerWidth);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (width < 768) {
+      setSideBarShow(false);
+      setIsMobile(true);
+    } else {
+      setSideBarShow(true);
+      setIsMobile(false);
+    }
+  }, [width]);
+
+  const handleTabBarToggle = () => {
+    setSideBarShow(!sideBarShow);
+  };
+
   return (
     <Wrap>
-      <TopBar />
-      <SideBar />
+      <TopBar
+        sideBarShow={sideBarShow}
+        isMobile={isMobile}
+        handleToggle={handleTabBarToggle}
+      />
+      {sideBarShow ? <SideBar /> : null}
+
       <ChildWrap> {children}</ChildWrap>
     </Wrap>
   );

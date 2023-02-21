@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { IoMenu, IoClose } from "react-icons/io5";
 
 const Container = styled.div`
   position: fixed;
@@ -16,13 +17,16 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+const HeaderLeft = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+`;
 
 const LogoTitleArea = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
 `;
 
 const Title = styled.p`
@@ -30,19 +34,54 @@ const Title = styled.p`
   margin-left: 10px;
   font-size: 15px;
 `;
+const TabBarToggle = styled.div`
+  padding-right: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const IconButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
 
-export default function TopBar() {
+export default function TopBar({ isMobile, sideBarShow, handleToggle }) {
   const router = useRouter();
   return (
     <Container>
-      <LogoTitleArea
-        onClick={() => {
-          router.push("/dashboard");
-        }}
-      >
-        <Image alt={"금천고 로고"} src={"/icon.png"} width={30} height={30} />
-        <Title>금천고등학교 앱 관리 시스템</Title>
-      </LogoTitleArea>
+      <HeaderLeft>
+        {isMobile ? (
+          <TabBarToggle>
+            {!sideBarShow ? (
+              <IconButton
+                onClick={() => {
+                  handleToggle();
+                }}
+              >
+                <IoMenu size={"26px"} />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  handleToggle();
+                }}
+              >
+                <IoClose size={"28px"} />
+              </IconButton>
+            )}
+          </TabBarToggle>
+        ) : null}
+        <LogoTitleArea
+          onClick={() => {
+            router.push("/dashboard");
+          }}
+        >
+          <Image alt={"금천고 로고"} src={"/icon.png"} width={30} height={30} />
+          <Title>금천고등학교 앱 관리 시스템</Title>
+        </LogoTitleArea>
+      </HeaderLeft>
     </Container>
   );
 }
