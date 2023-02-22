@@ -22,13 +22,14 @@ export default function Layout({ children }) {
   const [sideBarShow, setSideBarShow] = useState(true);
 
   useEffect(() => {
+    setWidth(window.innerWidth);
     window.addEventListener("resize", () => {
       setWidth(window.innerWidth);
     });
   }, []);
 
   useEffect(() => {
-    if (width < 768) {
+    if (width && width < 768) {
       setSideBarShow(false);
       setIsMobile(true);
     } else {

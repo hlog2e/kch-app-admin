@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { RxDashboard } from "react-icons/rx";
-import { IoPeopleOutline } from "react-icons/io5";
+import { IoPeopleOutline, IoKeyOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 
 const Container = styled.div`
@@ -29,6 +29,14 @@ export default function SideBar() {
       icon: <IoPeopleOutline />,
       route: "/student",
       isChecked: router.pathname === "/student",
+      router: router,
+    },
+    {
+      id: 2,
+      text: "가입코드",
+      icon: <IoKeyOutline />,
+      route: "/register-code",
+      isChecked: router.pathname === "/register-code",
       router: router,
     },
   ];
