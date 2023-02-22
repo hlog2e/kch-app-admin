@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const apiInstance = axios.create({
-  baseURL: "https://api.kch-app.me/admin",
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER + "/admin",
 });
 export const apiAuthInstance = axios.create({
-  baseURL: "https://api.kch-app.me/admin",
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER + "/admin",
 });
 
 // request 인터셉터
