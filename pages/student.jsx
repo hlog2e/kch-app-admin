@@ -1,7 +1,8 @@
 import Layout from "@/components/Layout";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
+import moment from "moment";
 import { getStudentsByGradeAndClass } from "@/apis/user";
 
 const WrapStudentManage = styled.div`
@@ -41,6 +42,13 @@ export default function Student() {
             setClassInfo={setClassInfo}
           />
         </ClassSelectRow>
+        {data ? (
+          <StudentsRow>
+            {data.map((props) => {
+              return <StudentItem key={props._id} userData={props} />;
+            })}
+          </StudentsRow>
+        ) : null}
       </WrapStudentManage>
     </Layout>
   );
@@ -153,5 +161,74 @@ function ClassSelectButtons({ classInfo, setClassInfo }) {
         );
       })}
     </ClassSelectButtonRow>
+  );
+}
+
+const StudentsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px;
+`;
+
+const StudentCard = styled.div`
+  background-color: white;
+  width: 230px;
+  border-radius: 15px;
+  padding: 14px;
+  margin-right: 12px;
+  margin-top: 12px;
+`;
+
+const StudentClassText = styled.p`
+  font-size: 12px;
+  font-weight: 200;
+  color: gray;
+`;
+const StudentName = styled.p`
+  margin-top: 6px;
+  font-size: 24px;
+  font-weight: 600;
+`;
+const StudentDesc = styled.p`
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 300;
+`;
+
+function StudentItem({ userData }) {
+  return (
+    <StudentCard>
+      <StudentClassText>
+        {userData.grade +
+          "학년 " +
+          userData.class +
+          "반 " +
+          userData.number +
+          "번"}
+      </StudentClassText>
+      <StudentName>{userData.name}</StudentName>
+      <StudentDesc>ID : {userData._id}</StudentDesc>
+      <StudentDesc>전화번호 : {userData.phone_number}</StudentDesc>
+      <StudentDesc>
+        푸시알림 :{" "}
+        {userData.notifications.length > 0
+          ? userData.notifications.join(", ")
+          : "수신거부"}
+      </StudentDesc>
+      <StudentDesc>
+        바코드 : {userData.barcode ? userData.barcode : "미등록"}
+      </StudentDesc>
+      <StudentDesc>
+        사진 :{" "}
+        {userData.photo ? (
+          <a href={userData.photo}>{userData.photo}</a>
+        ) : (
+          "미등록"
+        )}
+      </StudentDesc>
+      <StudentDesc>
+        가입일시 : {moment(userData.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+      </StudentDesc>
+    </StudentCard>
   );
 }

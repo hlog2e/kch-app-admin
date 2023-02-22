@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const apiInstance = axios.create({
-  baseURL: "http://localhost:3001/admin",
+  baseURL: "https://api.kch-app.me/admin",
 });
 export const apiAuthInstance = axios.create({
-  baseURL: "http://localhost:3001/admin",
+  baseURL: "https://api.kch-app.me/admin",
 });
 
 // request 인터셉터
