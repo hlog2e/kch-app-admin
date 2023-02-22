@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { login } from "@/apis/auth";
@@ -94,7 +93,7 @@ export default function Login() {
   return (
     <Container>
       <Card>
-        <Image alt={"금천고 로고"} width={50} height={50} src="/icon.png" />
+        <img alt={"금천고 로고"} width={50} height={50} src="/icon.png" />
         <Title>로그인</Title>
 
         <InputWrap onSubmit={handleLogin}>

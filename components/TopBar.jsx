@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { IoMenu, IoClose } from "react-icons/io5";
 
@@ -78,7 +77,7 @@ export default function TopBar({ isMobile, sideBarShow, handleToggle }) {
             router.push("/dashboard");
           }}
         >
-          <Image alt={"금천고 로고"} src={"/icon.png"} width={30} height={30} />
+          <img alt={"금천고 로고"} src={"/icon.png"} width={30} height={30} />
           <Title>금천고등학교 앱 관리 시스템</Title>
         </LogoTitleArea>
       </HeaderLeft>
