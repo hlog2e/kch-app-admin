@@ -1,5 +1,8 @@
 import Layout from "@/components/Layout";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getStudentsByGradeAndClass } from "@/apis/user";
 
 const WrapStudentManage = styled.div`
   display: flex;
@@ -14,14 +17,29 @@ const HeaderRow = styled.div`
 `;
 
 export default function Student() {
+  const [classInfo, setClassInfo] = useState({ grade: 1, class: 1 });
+  const { data } = useQuery(["StudentOfClass", classInfo], () => {
+    return getStudentsByGradeAndClass(classInfo.grade, classInfo.class);
+  });
+
   return (
     <Layout>
       <WrapStudentManage>
         <HeaderRow>
-          <HeaderItem title={"2학년 5반 가입자 수"} content={"12명"} />
+          <HeaderItem
+            title={"선택한 학급"}
+            content={classInfo.grade + "-" + classInfo.class}
+          />
+          <HeaderItem
+            title={"가입자 수"}
+            content={data ? data.length + "명" : "0명"}
+          />
         </HeaderRow>
         <ClassSelectRow>
-          <ClassSelectButtons />
+          <ClassSelectButtons
+            classInfo={classInfo}
+            setClassInfo={setClassInfo}
+          />
         </ClassSelectRow>
       </WrapStudentManage>
     </Layout>
@@ -70,21 +88,24 @@ const ClassSelectButtonRow = styled.div`
   padding-right: 12px;
 `;
 const ClassSelectButton = styled.div`
-  background-color: #f4f4f4;
   border-radius: 8px;
   height: 100%;
-
+  background-color: ${(props) => {
+    return props.active ? "#dbeafe" : "#f4f4f4";
+  }};
+  color: ${(props) => {
+    return props.active ? "#60a5fa" : "gray";
+  }};
   min-width: 70px;
   margin-left: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: gray;
   font-size: 14px;
   cursor: pointer;
 `;
 
-function ClassSelectButtons() {
+function ClassSelectButtons({ classInfo, setClassInfo }) {
   const classArray = [
     { grade: 1, class: 1 },
     { grade: 1, class: 2 },
@@ -118,7 +139,15 @@ function ClassSelectButtons() {
     <ClassSelectButtonRow>
       {classArray.map((props) => {
         return (
-          <ClassSelectButton>
+          <ClassSelectButton
+            key={String(props.grade) + String(props.class)}
+            active={
+              props.grade === classInfo.grade && props.class === classInfo.class
+            }
+            onClick={() => {
+              setClassInfo(props);
+            }}
+          >
             <p>{props.grade + "학년 " + props.class + "반"}</p>
           </ClassSelectButton>
         );

@@ -55,6 +55,15 @@ export default function Login() {
   const [detectInputed, setDetectInputed] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    if (token && user) {
+      router.push("/dashboard");
+    }
+  });
+
+  useEffect(() => {
     if (idValue.length > 0 && pwValue.length > 0) {
       setDetectInputed(true);
     } else {
