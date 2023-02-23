@@ -3,9 +3,14 @@ import styled from "styled-components";
 import Header from "@/components/Header";
 import SelectionBox from "@/components/SelectionBox";
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getRegisterCodeInfo, getRegisterCodes } from "@/apis/registerCode";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  deleteUnUsedRegisterCode,
+  getRegisterCodeInfo,
+  getRegisterCodes,
+} from "@/apis/registerCode";
 import moment from "moment/moment";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   display: flex;
@@ -82,8 +87,27 @@ const RegisterDesc = styled.p`
   font-size: 13px;
   font-weight: 300;
 `;
+const CardButton = styled.div`
+  margin-top: 12px;
+  height: 35px;
+  width: 100%;
+  background-color: #f87171;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+`;
 
 function RegisterCodeItem({ codeData }) {
+  const { mutate: deleteRegisterCodeMutate } = useMutation(
+    deleteUnUsedRegisterCode
+  );
+  const queryClient = useQueryClient();
+
   return (
     <RegisterCard>
       <RegisterTitle>{codeData._id}</RegisterTitle>
@@ -107,6 +131,28 @@ function RegisterCodeItem({ codeData }) {
         생성일시 : {moment(codeData.createdAt).format("YYYY-MM-DD hh:mm:ss")}
       </RegisterDesc>
       <RegisterDesc>발급자 : {codeData.issuer}</RegisterDesc>
+      {!codeData.isUsed ? (
+        <CardButton
+          onClick={() => {
+            deleteRegisterCodeMutate(
+              { code: codeData._id },
+              {
+                onSuccess: (res) => {
+                  toast.success(res.message);
+                  queryClient.invalidateQueries("RegisterCodeInfo");
+                  queryClient.invalidateQueries("RegisterCodes");
+                },
+                onError: (err) => {
+                  console.log(err);
+                  toast.error("가입코드 삭제 중 오류가 발생하였습니다.");
+                },
+              }
+            );
+          }}
+        >
+          <p>삭제하기</p>
+        </CardButton>
+      ) : null}
     </RegisterCard>
   );
 }

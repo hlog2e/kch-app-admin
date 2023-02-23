@@ -13,3 +13,11 @@ export async function getRegisterCodes(_isUsed) {
 
   return data;
 }
+
+export async function deleteUnUsedRegisterCode(props) {
+  const { data } = await apiAuthInstance.delete("/register-code", {
+    data: { code: props.code },
+  });
+
+  return data;
+}
