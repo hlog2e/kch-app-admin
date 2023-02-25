@@ -1,5 +1,5 @@
-import TopBar from "@/components/TopBar";
-import SideBar from "@/components/SideBar";
+import TopBar from "@/components/Layout/TopBar";
+import SideBar from "@/components/Layout/SideBar";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 

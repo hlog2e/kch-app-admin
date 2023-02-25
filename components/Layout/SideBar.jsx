@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { RxDashboard } from "react-icons/rx";
-import { IoPeopleOutline, IoKeyOutline } from "react-icons/io5";
+import {
+  IoPeopleOutline,
+  IoKeyOutline,
+  IoDocumentTextOutline,
+  IoAlbumsOutline,
+} from "react-icons/io5";
 import { useRouter } from "next/router";
 
 const Container = styled.div`
@@ -37,6 +42,30 @@ export default function SideBar() {
       icon: <IoKeyOutline />,
       route: "/register-code",
       isChecked: router.pathname === "/register-code",
+      router: router,
+    },
+    {
+      id: 3,
+      text: "공지사항",
+      icon: <IoDocumentTextOutline />,
+      route: "/notice",
+      isChecked: router.pathname === "/notice",
+      router: router,
+    },
+    {
+      id: 4,
+      text: "피드관리",
+      icon: <IoAlbumsOutline />,
+      route: "/feed",
+      isChecked: router.pathname === "/feed",
+      router: router,
+    },
+    {
+      id: 5,
+      text: "커뮤니티",
+      icon: <IoPeopleOutline />,
+      route: "/community",
+      isChecked: router.pathname === "/community",
       router: router,
     },
   ];

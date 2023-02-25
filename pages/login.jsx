@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { login } from "@/apis/auth";
-import Button from "@/components/Button";
+import Button from "@/components/login/Button";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 

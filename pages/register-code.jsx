@@ -1,65 +1,120 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/Layout/Layout";
 import styled from "styled-components";
-import Header from "@/components/Header";
-import SelectionBox from "@/components/SelectionBox";
+import Header from "@/components/common/Header";
+import SelectionBox from "@/components/common/SelectionBox";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
+  createRegisterCode,
   deleteUnUsedRegisterCode,
   getRegisterCodeInfo,
   getRegisterCodes,
 } from "@/apis/registerCode";
 import moment from "moment/moment";
 import { toast } from "react-toastify";
+import ButtonSM from "@/components/register-code/ButtonSM";
+import AmountPicker from "@/components/register-code/AmountPicker";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const ButtonRow = styled.div`
+  display: flex;
+  margin-left: 12px;
+`;
 export default function RegisterCode() {
   const [type, setType] = useState({ isUsed: false, value: "미사용" });
 
+  const queryClient = useQueryClient();
   const { data: info } = useQuery("RegisterCodeInfo", getRegisterCodeInfo);
   const { data: registerCodes } = useQuery(["RegisterCodes", type], () => {
     return getRegisterCodes(type.isUsed);
   });
 
+  const { mutate: createRegisterCodeMutate } = useMutation(createRegisterCode);
+
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [isExcel, setIsExcel] = useState(false);
+
   return (
-    <Layout>
-      <Wrapper>
-        <Header
-          data={[
-            {
-              title: "미사용 가입코드",
-              content: info ? info.unUsed + "개" : "null",
-            },
-            {
-              title: "사용한 가입코드",
-              content: info ? info.used + "개" : "null",
-            },
-            {
-              title: "전체 가입코드",
-              content: info ? info.all + "개" : "null",
-            },
-          ]}
-        />
-        <SelectionBox
-          selected={type}
-          setSelected={setType}
-          array={[
-            { isUsed: false, value: "미사용" },
-            { isUsed: true, value: "사용함" },
-          ]}
-        />
-        {registerCodes ? (
-          <RegisterCodeRow>
-            {registerCodes.map((props) => {
-              return <RegisterCodeItem key={props._id} codeData={props} />;
-            })}
-          </RegisterCodeRow>
-        ) : null}
-      </Wrapper>
-    </Layout>
+    <>
+      <Layout>
+        <Wrapper>
+          <Header
+            data={[
+              {
+                title: "미사용 가입코드",
+                content: info ? info.unUsed + "개" : "null",
+              },
+              {
+                title: "사용한 가입코드",
+                content: info ? info.used + "개" : "null",
+              },
+              {
+                title: "전체 가입코드",
+                content: info ? info.all + "개" : "null",
+              },
+            ]}
+          />
+          <SelectionBox
+            selected={type}
+            setSelected={setType}
+            array={[
+              { isUsed: false, value: "미사용" },
+              { isUsed: true, value: "사용함" },
+            ]}
+          />
+          <ButtonRow>
+            <ButtonSM
+              text="가입코드 생성"
+              onClick={() => {
+                setIsExcel(false);
+                setPickerOpen(true);
+              }}
+            />
+            <ButtonSM
+              text="가입코드 생성 (액셀)"
+              onClick={() => {
+                setIsExcel(true);
+                setPickerOpen(true);
+              }}
+            />
+          </ButtonRow>
+          <AmountPicker
+            open={pickerOpen}
+            setOpen={setPickerOpen}
+            amount={amount}
+            setAmount={setAmount}
+            onSubmit={() => {
+              createRegisterCodeMutate(
+                { amount: amount },
+                {
+                  onSuccess: () => {
+                    toast.success(`가입코드 ${amount}개가 생성되었습니다.`);
+                    queryClient.invalidateQueries("RegisterCodeInfo");
+                    queryClient.invalidateQueries("RegisterCodes");
+                  },
+                }
+              );
+
+              setPickerOpen(false);
+              setAmount(0);
+            }}
+          />
+
+          {registerCodes ? (
+            <RegisterCodeRow>
+              {registerCodes.map((props) => {
+                return <RegisterCodeItem key={props._id} codeData={props} />;
+              })}
+            </RegisterCodeRow>
+          ) : null}
+        </Wrapper>
+      </Layout>
+    </>
   );
 }
 

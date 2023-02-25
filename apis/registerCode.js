@@ -21,3 +21,11 @@ export async function deleteUnUsedRegisterCode(props) {
 
   return data;
 }
+
+export async function createRegisterCode(props) {
+  const { data } = await apiAuthInstance.post("/register-code/many", {
+    amount: props.amount,
+  });
+
+  return data;
+}

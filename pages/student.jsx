@@ -1,11 +1,11 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/Layout/Layout";
 import styled from "styled-components";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import moment from "moment";
 import { getStudentsByGradeAndClass } from "@/apis/user";
-import Header from "@/components/Header";
-import SelectionBox from "@/components/SelectionBox";
+import Header from "@/components/common/Header";
+import SelectionBox from "@/components/common/SelectionBox";
 
 const WrapStudentManage = styled.div`
   display: flex;
