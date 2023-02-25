@@ -2,7 +2,7 @@ import Layout from "@/components/Layout/Layout";
 import styled from "styled-components";
 import Header from "@/components/common/Header";
 import SelectionBox from "@/components/common/SelectionBox";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createRegisterCode,
@@ -14,6 +14,7 @@ import moment from "moment/moment";
 import { toast } from "react-toastify";
 import ButtonSM from "@/components/register-code/ButtonSM";
 import AmountPicker from "@/components/register-code/AmountPicker";
+import { CSVDownload, CSVLink } from "react-csv";
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,7 +38,16 @@ export default function RegisterCode() {
 
   const [pickerOpen, setPickerOpen] = useState(false);
   const [amount, setAmount] = useState(0);
+
   const [isExcel, setIsExcel] = useState(false);
+  const [csvData, setCsvData] = useState([]);
+  const csvDownloaderRef = useRef();
+
+  useEffect(() => {
+    if (csvData.length > 0) {
+      csvDownloaderRef.current.link.click();
+    }
+  }, [csvData]);
 
   return (
     <>
@@ -92,10 +102,19 @@ export default function RegisterCode() {
               createRegisterCodeMutate(
                 { amount: amount },
                 {
-                  onSuccess: () => {
+                  onSuccess: (_data) => {
                     toast.success(`가입코드 ${amount}개가 생성되었습니다.`);
                     queryClient.invalidateQueries("RegisterCodeInfo");
                     queryClient.invalidateQueries("RegisterCodes");
+
+                    if (isExcel) {
+                      setCsvData(
+                        _data.codes.map(({ _id }) => {
+                          return { 가입코드: _id };
+                        })
+                      );
+                      setIsExcel(false);
+                    }
                   },
                 }
               );
@@ -103,6 +122,12 @@ export default function RegisterCode() {
               setPickerOpen(false);
               setAmount(0);
             }}
+          />
+
+          <CSVLink
+            data={csvData}
+            filename={"금천고 앱 가입코드"}
+            ref={csvDownloaderRef}
           />
 
           {registerCodes ? (
