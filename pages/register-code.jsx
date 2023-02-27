@@ -14,7 +14,7 @@ import moment from "moment/moment";
 import { toast } from "react-toastify";
 import ButtonSM from "@/components/register-code/ButtonSM";
 import AmountPicker from "@/components/register-code/AmountPicker";
-import { CSVDownload, CSVLink } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const Wrapper = styled.div`
   display: flex;
