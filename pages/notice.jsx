@@ -190,8 +190,8 @@ function Form() {
         onClick={() => {
           if (
             inputData.title.length > 0 &&
-            inputData.content > 0 &&
-            inputData.writer > 0
+            inputData.content.length > 0 &&
+            inputData.writer.length > 0
           ) {
             addNoticeMutate(
               {
