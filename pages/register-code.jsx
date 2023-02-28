@@ -204,11 +204,11 @@ function RegisterCodeItem({ codeData }) {
       <RegisterDesc>
         사용일시 :{" "}
         {codeData.isUsed
-          ? moment(codeData.updatedAt).format("YYYY-MM-DD hh:mm:ss")
+          ? moment(codeData.updatedAt).format("YYYY-MM-DD hh:mm:ss A")
           : "미사용"}
       </RegisterDesc>
       <RegisterDesc>
-        생성일시 : {moment(codeData.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+        생성일시 : {moment(codeData.createdAt).format("YYYY-MM-DD hh:mm:ss A")}
       </RegisterDesc>
       <RegisterDesc>발급자 : {codeData.issuer}</RegisterDesc>
       {!codeData.isUsed ? (

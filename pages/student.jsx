@@ -145,7 +145,7 @@ function StudentItem({ userData }) {
         )}
       </StudentDesc>
       <StudentDesc>
-        가입일시 : {moment(userData.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+        가입일시 : {moment(userData.createdAt).format("YYYY-MM-DD hh:mm:ss A")}
       </StudentDesc>
     </StudentCard>
   );
