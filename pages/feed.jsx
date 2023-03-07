@@ -59,7 +59,6 @@ const FeedCol = styled.div`
 function FeedItems() {
   const { data } = useQuery("FeedItems", getFeedItems);
 
-  console.log(data);
   return (
     <FeedCol>
       {data
