@@ -153,6 +153,7 @@ const FormButton = styled.div`
   align-items: center;
   cursor: pointer;
 `;
+
 function Form() {
   const [inputData, setInputData] = useState({
     title: "",
