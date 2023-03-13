@@ -72,7 +72,7 @@ const NoticeCreatedAt = styled.p`
   color: gray;
   margin-top: 4px;
 `;
-const NoticeContent = styled.p`
+const NoticeContent = styled.pre`
   font-size: 15px;
   font-weight: 200;
   margin-top: 16px;
