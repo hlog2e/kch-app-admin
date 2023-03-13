@@ -29,7 +29,10 @@ export default function Student() {
           data={[
             {
               title: "선택한 학급",
-              content: classInfo.grade + "-" + classInfo.class,
+              content:
+                classInfo.grade === "선생님"
+                  ? "선생님"
+                  : classInfo.grade + "-" + classInfo.class,
             },
             {
               title: "가입자 수",
@@ -68,6 +71,7 @@ export default function Student() {
             { grade: 3, class: 7, value: "3학년 7반" },
             { grade: 3, class: 8, value: "3학년 8반" },
             { grade: 3, class: 9, value: "3학년 9반" },
+            { grade: "선생님", class: "선생님", value: "선생님" },
           ]}
         />
         {data ? (
