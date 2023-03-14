@@ -5,3 +5,13 @@ export async function getFeedItems() {
 
   return data;
 }
+
+export async function postFeedWithImage(props) {
+  const { data } = await apiAuthInstance.post("/feed", props.formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+}

@@ -163,6 +163,31 @@ function Form() {
 
   const queryClient = useQueryClient();
   const { mutate: addNoticeMutate } = useMutation(postNotice);
+
+  const handleUploadNotice = () => {
+    if (
+      inputData.title.length > 0 &&
+      inputData.content.length > 0 &&
+      inputData.writer.length > 0
+    ) {
+      addNoticeMutate(
+        {
+          title: inputData.title,
+          content: inputData.content,
+          writer: inputData.writer,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries("GetNotices");
+            toast.success("공지가 등록되었습니다!");
+          },
+        }
+      );
+      setInputData({ title: "", content: "", writer: "" });
+    } else {
+      toast.error("빈 항목이 있습니다!");
+    }
+  };
   return (
     <FormBox>
       <FormTitle>공지 등록하기</FormTitle>
@@ -187,32 +212,7 @@ function Form() {
         }}
         placeholder={"작성자"}
       />
-      <FormButton
-        onClick={() => {
-          if (
-            inputData.title.length > 0 &&
-            inputData.content.length > 0 &&
-            inputData.writer.length > 0
-          ) {
-            addNoticeMutate(
-              {
-                title: inputData.title,
-                content: inputData.content,
-                writer: inputData.writer,
-              },
-              {
-                onSuccess: () => {
-                  queryClient.invalidateQueries("GetNotices");
-                  toast.success("공지가 등록되었습니다!");
-                },
-              }
-            );
-            setInputData({ title: "", content: "", writer: "" });
-          } else {
-            toast.error("빈 항목이 있습니다!");
-          }
-        }}
-      >
+      <FormButton onClick={handleUploadNotice}>
         <p>작성하기</p>
       </FormButton>
     </FormBox>
