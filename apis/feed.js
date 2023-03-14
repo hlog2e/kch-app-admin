@@ -15,3 +15,12 @@ export async function postFeedWithImage(props) {
 
   return data;
 }
+
+export async function deleteFeed(props) {
+  const { data } = await apiAuthInstance.delete("/feed", {
+    data: { feedId: props.feedId },
+  });
+
+  console.log(data);
+  return data;
+}

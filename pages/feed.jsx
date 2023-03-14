@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getFeedItems, postFeedWithImage } from "@/apis/feed";
+import { deleteFeed, getFeedItems, postFeedWithImage } from "@/apis/feed";
 import moment from "moment";
 import uuid from "react-uuid";
 import { useDropzone } from "react-dropzone";
@@ -281,7 +281,19 @@ const FeedHeader = styled.div`
   padding: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 55px;
+`;
+const FeedDeleteBtn = styled.p`
+  cursor: pointer;
+  color: #fb7185;
+  font-size: 12px;
+  font-weight: 600;
+`;
+
+const FeedHeaderItem = styled.div`
+  display: flex;
+  align-items: center;
 `;
 const FeedHeaderTitle = styled.p`
   margin-left: 6px;
@@ -313,11 +325,33 @@ const FeedDatetime = styled.p`
 `;
 
 function FeedItem({ feedData }) {
+  const { mutate: deleteFeedMutate } = useMutation(deleteFeed);
+  const queryClient = useQueryClient();
+
   return (
     <FeedBox>
       <FeedHeader>
-        <img width={"30px"} height={"30px"} src={"/icon.png"} />
-        <FeedHeaderTitle>{feedData.publisher}</FeedHeaderTitle>
+        <FeedHeaderItem>
+          <img width={"30px"} height={"30px"} src={"/icon.png"} />
+          <FeedHeaderTitle>{feedData.publisher}</FeedHeaderTitle>
+        </FeedHeaderItem>
+        <FeedHeaderItem>
+          <FeedDeleteBtn
+            onClick={() => {
+              deleteFeedMutate(
+                { feedId: feedData._id },
+                {
+                  onSuccess: (res) => {
+                    toast.success(res.message);
+                    queryClient.invalidateQueries("FeedItems");
+                  },
+                }
+              );
+            }}
+          >
+            삭제하기
+          </FeedDeleteBtn>
+        </FeedHeaderItem>
       </FeedHeader>
       <Slider dots>
         {feedData.images
